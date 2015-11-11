@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>canvas.html</title>
+<style>
+    .hedder{
+        width:960px;
+        height:150px;
+        background-color:coral;
+        margin:10px 20px;
+        
+    }
+    .title{
+        margin: 10px 10px;
+        font-size:120px;
+        color:azure;
+    }
+    .main{
+        width:960;
+        
+    }
+</style>
+</head>
+<body>
+<script src="js/jquery-2.1.3.min.js"></script>
+<script type="text/javascript" src="jscolor/jscolor.js"></script>
+<section>
+<div class="hedder">
+    <h1 class ="title">Canvas</h1>
+</div>
+<div class="main">
+   <button><a href="index.html">top</a></button>
+    <button><a href="kadai_canvas1.html">kadai1</a></button>
+    
+<!-- jscolorでの色変更をやってみたい
+<div id="canvasTool">
+            <input class="color" value="000000">
+            <select id="penColor">
+                <option value="000000">黒色</option>
+                <option value="FF0000">赤色</option>
+                <option value="FFFF00">黄色</option>
+                <option value="00FF00">緑色</option>
+                <option value="0000FF">青色</option>
+                <option value="FFFFFF">白色</option>
+            </select>
+</div>
+-->
+<!--
+<div>
+    <input class="R_color" value="00">
+    <input class="G_color" value="00">
+    <input class="B_color" value="00">
+    
+</div>
+-->
+<p>＜＜画像の色をキャンバスにより変化＞＞</p>
+<canvas id="canvsid" width="300" height="300"></canvas>
+
+</section>
+<!--<script src="jscolor/jscolor.js"></script>-->
+<script>
+
+    //ここの数字をいじると画像の色が変化する。
+    change('canvsid','img/images.jpeg',250,0,0);
+    //change('canvsid','img/images.jpeg','color');
+
+$('.color').on('keyup input change', function(){
+    ctx.strokeStyle = "#" + $(this).val();
+});
+    
+$('#penColor').change(function(){
+    $('.color')[0].color.fromString($(this).val());
+    $('.color').trigger('change');
+});
+
+
+function change(id,src,rR,rG,rB) {
+    var canvas = document.getElementById(id),
+    picWidth = $('#canvsid').width(),
+    picHeight = $('#canvsid').height(),
+    picLength = picWidth * picHeight,
+    mg = new Image();
+    if (canvas.getContext) {
+        ctx = canvas.getContext("2d");
+        mg.onload = function() {
+            var imgH = mg.height,
+            imgW = mg.width,
+            imgHhalf = mg.height/2,
+            imgWhalf = mg.width/2,
+            imgx = imgWhalf - picWidth/2,
+            imgy = imgHhalf - picHeight/2;
+            ctx.drawImage(mg,imgx,imgy,picWidth,picHeight,0,0,picWidth,picHeight);
+            mg = ctx.getImageData(0, 0, picWidth, picHeight);
+            for (var i = 0; i < picLength * 4; i += 4) {
+                var myRed = mg.data[i];
+                var myGreen = mg.data[i + 1];
+                var myBlue = mg.data[i + 2];
+                mg.data[i] = myRed + rR;
+                mg.data[i + 1] = myGreen + rG;
+                mg.data[i + 2] = myBlue + rB;
+            }
+            ctx.putImageData(mg, 0, 0);
+        }
+        mg.src = src;
+    }
+}
+
+</script>
+<p>＜＜元の画像＞＞</p>
+<img src="img/images.jpeg">
+</div>
+</body>
+</html>
